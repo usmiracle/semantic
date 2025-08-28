@@ -43,7 +43,18 @@ class SemanticSimilarity:
         max_distance = torch.norm(embeddings1) + torch.norm(embeddings2)
         normalized_euclidean_similarity = 1 - (euclidean_distance / max_distance)
         
-        # Determine similarity level
+        # Aggregate into a single final similarity score (0..1)
+        # Weighted average favoring cosine similarity
+        weight_cosine = 0.7
+        weight_norm_euclid = 0.3
+        final_similarity = (
+            weight_cosine * float(cosine_similarity)
+            + weight_norm_euclid * float(normalized_euclidean_similarity)
+        )
+        # Clamp to [0, 1]
+        final_similarity = max(0.0, min(1.0, final_similarity))
+        
+        # Determine similarity level (kept based on cosine for backward-compatibility/tests)
         similarity_level = self._get_similarity_level(cosine_similarity)
         
         return {
@@ -53,6 +64,7 @@ class SemanticSimilarity:
             'dot_similarity': dot_similarity,
             'euclidean_distance': euclidean_distance,
             'normalized_euclidean_similarity': normalized_euclidean_similarity,
+            'final_similarity': final_similarity,
             'similarity_level': similarity_level,
             'explanation': self._get_explanation(cosine_similarity, similarity_level)
         }
@@ -131,6 +143,9 @@ def print_similarity_results(results: Dict[str, Any]):
     print(f"Sentence 1: '{results['sentence1']}'")
     print(f"Sentence 2: '{results['sentence2']}'")
     print("-"*60)
+    # Aggregated score first
+    if 'final_similarity' in results:
+        print(f"Final Similarity (aggregated): {results['final_similarity']:.4f}")
     print(f"Cosine Similarity: {results['cosine_similarity']:.4f}")
     print(f"Dot Product Similarity: {results['dot_similarity']:.4f}")
     print(f"Euclidean Distance: {results['euclidean_distance']:.4f}")
