@@ -55,8 +55,7 @@ class SemanticSimilarity:
             'dot_similarity': dot_similarity,
             'euclidean_distance': euclidean_distance,
             'normalized_euclidean_similarity': normalized_euclidean_similarity,
-            'similarity_level': similarity_level,
-            'explanation': self._get_explanation(cosine_similarity, similarity_level)
+            'similarity_level': similarity_level
         }
     
     def _get_similarity_level(self, cosine_similarity: float) -> str:
@@ -72,16 +71,7 @@ class SemanticSimilarity:
         else:
             return "Very Low Similarity"
     
-    def _get_explanation(self, cosine_similarity: float, similarity_level: str) -> str:
-        """Provide a human-readable explanation of the similarity."""
-        explanations = {
-            "Very High Similarity": "These sentences are very similar in meaning. They likely express the same concept or idea using different words.",
-            "High Similarity": "These sentences are quite similar. They share related concepts and themes, though they may differ in some details.",
-            "Moderate Similarity": "These sentences have some similarity. They may share some concepts but differ in their main focus or meaning.",
-            "Low Similarity": "These sentences have limited similarity. They may share some words or concepts but express different ideas.",
-            "Very Low Similarity": "These sentences are very different. They likely express unrelated concepts or ideas."
-        }
-        return explanations.get(similarity_level, "Unable to determine similarity level.")
+
     
     def compare_multiple_sentences(self, sentences: list) -> Dict[str, Any]:
         """
@@ -139,7 +129,6 @@ def print_similarity_results(results: Dict[str, Any]):
     print(f"Normalized Euclidean Similarity: {results['normalized_euclidean_similarity']:.4f}")
     print("-"*60)
     print(f"Similarity Level: {results['similarity_level']}")
-    print(f"Explanation: {results['explanation']}")
     print("="*60)
 
 def interactive_mode():
