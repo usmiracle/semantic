@@ -39,8 +39,8 @@ python semantic.py --sentence1 "The cat is on the mat" --sentence2 "A feline sit
 # Or use short flags
 python semantic.py -s1 "Hello world" -s2 "Hi there"
 
-# Use a different model
-python semantic.py -s1 "I love pizza" -s2 "I enjoy Italian food" -m "all-mpnet-base-v2"
+# Use a smaller, faster model
+python semantic.py -s1 "I love pizza" -s2 "I enjoy Italian food" -m "all-MiniLM-L6-v2"
 ```
 
 ### Programmatic Usage
@@ -48,7 +48,7 @@ python semantic.py -s1 "I love pizza" -s2 "I enjoy Italian food" -m "all-mpnet-b
 ```python
 from semantic import SemanticSimilarity
 
-# Initialize the analyzer
+# Initialize the analyzer (uses all-mpnet-base-v2 by default)
 analyzer = SemanticSimilarity()
 
 # Compare two sentences
@@ -86,10 +86,11 @@ The program categorizes similarity into five levels:
 
 ## Available Models
 
-- `all-MiniLM-L6-v2` (default): Fast and efficient, good for most use cases
-- `all-mpnet-base-v2`: Higher quality but slower
+- `all-mpnet-base-v2` (default): Higher quality, larger model with better accuracy
+- `all-MiniLM-L6-v2`: Fast and efficient, good for most use cases
 - `all-distilroberta-v1`: Good balance of speed and quality
 - `paraphrase-multilingual-MiniLM-L12-v2`: Multilingual support
+- `all-roberta-large-v1`: Largest model, highest accuracy but slowest
 
 ## Example Output
 
